@@ -47,6 +47,7 @@ export const Home = () => {
                   <select value={location} 
                     className="bg-transparent text-sm font-medium text-foreground w-full outline-none">
                   </select>
+                  
                 </div>
                 <button
                   className="bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition-colors text-sm whitespace-nowrap">
