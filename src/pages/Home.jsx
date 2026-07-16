@@ -1,3 +1,5 @@
+import { MapPin } from "lucide-react";
+
 export const Home = () => {
     return (
         <div>
@@ -17,6 +19,7 @@ export const Home = () => {
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
                 <div className="max-w-xl">
                     <span className="inline-flex items-center gap-2 bg-accent/20 text-accent border border-accent/30 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 backdrop-blur">
+                    < MapPin />
                     Now delivering in Waiyaki Way, Westlands, and Kitsuru
                     </span>
 
@@ -35,6 +38,7 @@ export const Home = () => {
                  {/* Location Selector */}
             <div className="bg-white rounded-2xl p-4 mb-6 shadow-xl max-w-md">
               <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                < MapPin />
                 Where should we deliver?
               </p>
 
