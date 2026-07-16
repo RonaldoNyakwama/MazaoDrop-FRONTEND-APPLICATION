@@ -1,5 +1,5 @@
 import { MapPin, Phone, Mail, Leaf } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaInstagram, FaXTwitter, FaTiktok } from "react-icons/fa6";
 
 
 export const Footer = () => {
@@ -20,7 +20,7 @@ export const Footer = () => {
               Fresh groceries from your local Nairobi market, delivered to your door in 60 minutes. Serving Waiyaki Way, Westlands, and Kitsuru.
             </p>
             <div className="flex items-center gap-3">
-              {[FaFacebookF, FaInstagram, FaXTwitter].map((Icon, i) => (
+              {[FaFacebookF, FaInstagram, FaXTwitter, FaTiktok,].map((Icon, i) => (
                 <button key={i} className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent transition-colors">
                   <Icon className="w-3.5 h-3.5" />
                 </button>
