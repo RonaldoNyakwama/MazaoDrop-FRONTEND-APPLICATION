@@ -5,6 +5,7 @@ import { Testimonials } from "./pages/Testimonials";
 import { Newsletter } from "./pages/Newsletter";
 import { Footer } from "./pages/Footer";
 import { CategoriesSection } from "./pages/Categories";
+import { HandpickedProducts } from "./pages/HandpickedProducts";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
     <>
       < Home />
       < CategoriesSection />
+      < HandpickedProducts />
       < WhyChooseUsSection />
       < ShoppingSteps />
       < Testimonials />
