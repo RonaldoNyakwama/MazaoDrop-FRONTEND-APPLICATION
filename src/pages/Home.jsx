@@ -38,7 +38,7 @@ export const Home = () => {
                  {/* Location Selector */}
             <div className="bg-white rounded-2xl p-4 mb-6 shadow-xl max-w-md">
               <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                < MapPin />
+                < MapPin /> 
                 Where should we deliver?
               </p>
 
