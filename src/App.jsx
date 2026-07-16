@@ -1,6 +1,7 @@
 import { Home } from "./pages/Home";
 import { WhyChooseUsSection } from "./pages/Choose"
 import { ShoppingSteps } from "./pages/ShoppingSteps";
+import { Testimonials } from "./pages/Testimonials";
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       < Home />
       < WhyChooseUsSection />
       < ShoppingSteps />
+      < Testimonials />
     </>
   )
 }
