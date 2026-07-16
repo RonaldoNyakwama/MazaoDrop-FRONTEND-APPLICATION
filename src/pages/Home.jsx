@@ -8,7 +8,7 @@ export const Home = () => {
             <div className="absolute inset-0">
                 <img
                     className="w-full h-full object-cover"
-                    src="./images/groceriesconstant.png" 
+                    src="images/groceriesconstant.png" 
                     alt="Fresh produce market"
                     width={1600}
                     height={900}

@@ -1,6 +1,7 @@
 import { Grid3X3, ShoppingCart, Package, Truck } from "lucide-react";
 
 export const ShoppingSteps = () => {
+    
     return (
         <section className="bg-primary text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
