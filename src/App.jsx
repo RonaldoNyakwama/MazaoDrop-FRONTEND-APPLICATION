@@ -3,6 +3,7 @@ import { WhyChooseUsSection } from "./pages/Choose"
 import { ShoppingSteps } from "./pages/ShoppingSteps";
 import { Testimonials } from "./pages/Testimonials";
 import { Newsletter } from "./pages/Newsletter";
+import { Footer } from "./pages/Footer";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       < ShoppingSteps />
       < Testimonials />
       < Newsletter />
+      < Footer />
     </>
   )
 }

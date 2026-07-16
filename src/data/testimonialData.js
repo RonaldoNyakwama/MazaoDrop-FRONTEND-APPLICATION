@@ -4,7 +4,7 @@ export const TESTIMONIALS = [
     name: "Wanjiku Kamau", 
     location: "Westlands", 
     rating: 5, 
-    comment: "SokoFresh has completely changed how I grocery shop. Fresh produce delivered within an hour. The quality is amazing and prices are very fair. Will never go back to queuing at the supermarket!", 
+    comment: "MazaoDrop has completely changed how I grocery shop. Fresh produce delivered within an hour. The quality is amazing and prices are very fair. Will never go back to queuing at the supermarket!", 
     img: "images/wanja.png"
   },
 
