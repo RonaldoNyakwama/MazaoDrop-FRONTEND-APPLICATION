@@ -6,22 +6,113 @@ import { Newsletter } from "./pages/Newsletter";
 import { Footer } from "./pages/Footer";
 import { CategoriesSection } from "./pages/Categories";
 import { HandpickedProducts } from "./pages/HandpickedProducts";
+import { SignIn } from "./pages/SignIn";
 import { Navbar } from "./components/Navbar";
+import { ShopGroceries } from "./pages/ShopGroceries";
+import { Cart } from "./pages/Cart";
+import { Checkout } from "./pages/Checkout";
+import { CustomerDashboard } from "./pages/CustomerDashboard";
+import { Support } from "./pages/Support";
+import { ProductDetails } from "./pages/ProductDetails";
+import { About } from "./pages/About";
+import { Contact } from "./pages/Contact";
+import { Register } from "./pages/Register";
+import { ErrandsPage } from "./pages/Errands";
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { useState } from "react";
+import { Leaf } from "lucide-react";
 
 function App() {
+  const [page, setPage] = useState("home");
+  const isFullScreen = page === "admin";
 
   return (
-    <>
-      < Navbar />
-      < Home />
-      < CategoriesSection />
-      < HandpickedProducts />
-      < WhyChooseUsSection />
-      < ShoppingSteps />
-      < Testimonials />
-      < Newsletter />
-      < Footer />
-    </>
+    <div className="min-h-screen bg-background flex flex-col">
+
+      {!isFullScreen && (
+        < Navbar page={page} setPage={setPage} />
+      )}
+      
+      <main className="flex-1">
+        {page === "home" &&(
+          <>
+          < Home setPage={setPage} />
+          < CategoriesSection />
+          < HandpickedProducts />
+          < WhyChooseUsSection />
+          < ShoppingSteps />
+          < Testimonials />
+          < Newsletter />
+          </>
+        )}
+
+        {page === "shop" &&(
+          < ShopGroceries />
+        )}
+
+        {page === "product" &&(
+          < ProductDetails />
+        )}
+
+        {page === "cart" &&(
+          < Cart setPage={setPage} />
+        )}
+
+        {page === "checkout" &&(
+          < Checkout setPage={setPage} />
+        )}
+
+        {page === "dashboard" &&(
+          < CustomerDashboard setPage={setPage} />
+        )}
+
+        {page === "about" &&(
+          < About setPage={setPage} />
+        )}
+
+        {page === "contact" &&(
+          < Contact />
+        )}
+        
+        {page === "support" &&(
+          < Support setPage={setPage} />
+        )}
+
+        {page === "signin" &&(
+          < SignIn setPage={setPage} />
+        )}
+
+        {page === "register" &&(
+          < Register setPage={setPage} />
+        )}
+
+        {page === "errands" &&(
+          < ErrandsPage />
+        )}
+
+        {page === "admin" && (
+          <div>
+            <div className="bg-sidebar text-sidebar-foreground h-14 flex items-center px-5 border-b border-sidebar-border sticky top-0 z-50">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 bg-sidebar-primary rounded-lg flex items-center justify-center">
+                  <Leaf className="w-3.5 h-3.5 text-sidebar-primary-foreground" />
+                </div>
+                <span className="font-bold" style={{ fontFamily: "Outfit, sans-serif" }}>MazaoDrop Admin</span>
+              </div>
+              <button onClick={() => setPage("home")} className="ml-auto text-xs font-medium text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors flex items-center gap-1.5">
+                {/*<LogOut className="w-3.5 h-3.5" /> Exit*/}
+              </button>
+            </div>
+            <AdminDashboard setPage={setPage} />
+          </div>
+        )}
+
+        {!isFullScreen && page !== "admin" && page !== "register" && page !== "signin" && (
+        <Footer setPage={setPage} />
+        )}
+                
+      </main>
+    </div>
   )
 }
 
