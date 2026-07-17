@@ -12,7 +12,7 @@ export const Newsletter = () => {
               Get Fresh Deals Delivered to Your Inbox
             </h2>
             <p className="text-white/70 mb-8 max-w-md mx-auto">
-              Subscribe for weekly grocery offers, seasonal produce alerts, and exclusive SokoFresh discounts.
+              Subscribe for weekly grocery offers, seasonal produce alerts, and exclusive MazaoDrop discounts.
             </p>
             
               <div className="flex items-center justify-center gap-2 text-white font-semibold">
