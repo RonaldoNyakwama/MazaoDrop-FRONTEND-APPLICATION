@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
 
 export const Home = () => {
     return (
@@ -59,6 +59,7 @@ export const Home = () => {
             <div className="flex flex-wrap gap-3">
                 <button className="flex items-center gap-2 bg-accent text-white font-bold px-7 py-3.5 rounded-2xl hover:bg-accent/90 active:scale-95 transition-all text-base shadow-lg shadow-accent/30">
                 Start Shopping
+                <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button className="flex items-center gap-2 bg-white/15 text-white font-semibold px-7 py-3.5 rounded-2xl hover:bg-white/25 transition-all text-base backdrop-blur border border-white/20">
