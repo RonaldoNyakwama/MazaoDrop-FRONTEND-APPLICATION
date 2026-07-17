@@ -9,7 +9,7 @@ export const TESTIMONIALS = [
   },
 
   { 
-    name: "Ronaldo Nyakwama", 
+    name: "Oscar Aluso", 
     location: "Waiyaki Way", 
     rating: 5, 
     comment: "As a busy professional, this service is an absolute lifesaver. I order my weekly groceries in five minutes and everything arrives fresh. The M-Pesa payment option is super convenient!", 
