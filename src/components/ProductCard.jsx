@@ -1,10 +1,12 @@
 import { Heart, Plus } from "lucide-react";
 import { StarRating } from "./StarRating";
 
-export const ProductCard = ({product}) => {
+export const ProductCard = ({product, onAddToCart, onSelect, onToggleWishlist, isWishlisted}) => {
   return (
     <div className="bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-200 group">
-      <div className="relative overflow-hidden cursor-pointer">
+      <div 
+        onClick={() => onSelect(product)}
+        className="relative overflow-hidden cursor-pointer">
         <img
           src={product.image} 
           width={400} 
@@ -18,9 +20,10 @@ export const ProductCard = ({product}) => {
           </span>
         )}
         <button
+          onClick={(e) => { e.stopPropagation(); onToggleWishlist(product.id); }}
           className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all">
 
-          <Heart className="w-4 h-4" />
+          <Heart className={`w-4 h-4 ${isWishlisted ? "fill-current" : ""}`} />
         </button>
       </div>
       <div className="p-3.5">
@@ -38,6 +41,7 @@ export const ProductCard = ({product}) => {
             <span className="text-xs text-muted-foreground ml-1">/{product.unit}</span>
           </div>
           <button
+            onClick={() => onAddToCart(product)}
             className="flex items-center gap-1 bg-primary text-white text-xs font-semibold px-3 py-2 rounded-xl hover:bg-primary/90 active:scale-95 transition-all">
             <Plus className="w-3.5 h-3.5" />
             Add
