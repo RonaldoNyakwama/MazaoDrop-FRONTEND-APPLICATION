@@ -24,7 +24,17 @@ import { Leaf } from "lucide-react";
 
 function App() {
   const [page, setPage] = useState("home");
+  const [wishlist, setWishlist] = useState(new Set());
   const isFullScreen = page === "admin";
+
+  const handleToggleWishlist = (id) => {
+    setWishlist((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -47,7 +57,8 @@ function App() {
         )}
 
         {page === "shop" &&(
-          < ShopGroceries />
+          < ShopGroceries
+            wishlist={wishlist} onToggleWishlist={handleToggleWishlist}/>
         )}
 
         {page === "product" &&(
