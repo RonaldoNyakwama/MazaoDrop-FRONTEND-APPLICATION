@@ -25,7 +25,8 @@ import { Leaf } from "lucide-react";
 function App() {
   const [page, setPage] = useState("home");
   const [wishlist, setWishlist] = useState(new Set());
-  const isFullScreen = page === "admin";
+  const [cart, setCart] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleToggleWishlist = (id) => {
     setWishlist((prev) => {
@@ -36,19 +37,54 @@ function App() {
     });
   };
 
+  const handleAddToCart = (product, qty = 1) => {
+    // console.log("Button clicked....Adding to cart");
+    
+    setCart((prev) => {
+      const existing = prev.find((i) => i.id === product.id);
+      if (existing) {
+        return prev.map((i) => i.id === product.id ? { ...i, quantity: i.quantity + qty } : i);
+      }
+      return [...prev, { ...product, quantity: qty }];
+    });
+  };
+
+  const handleUpdateQty = (id, qty) => {
+    if (qty <= 0) {
+      setCart((prev) => prev.filter((i) => i.id !== id));
+    } else {
+      setCart((prev) => prev.map((i) => i.id === id ? { ...i, quantity: qty } : i));
+    }
+  };
+
+  const handleSelectProduct = (product) => {
+    setSelectedProduct(product);
+    setPage("product");
+  };
+
+  const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
+
+  const isFullScreen = page === "admin";
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
 
       {!isFullScreen && (
-        < Navbar page={page} setPage={setPage} />
+        < Navbar page={page} setPage={setPage} cartCount={cartCount} />
       )}
       
       <main className="flex-1">
         {page === "home" &&(
           <>
-          < Home setPage={setPage} />
+          < Home setPage={setPage} cart={cart} onAddToCart={handleAddToCart}
+            wishlist={wishlist} onToggleWishlist={handleToggleWishlist} onSelectProduct={handleSelectProduct} />
+
           < CategoriesSection />
-          < HandpickedProducts />
+          < HandpickedProducts onAddToCart={handleAddToCart}
+            onSelectProduct={handleSelectProduct}
+            wishlist={wishlist}
+            onToggleWishlist={handleToggleWishlist}/>
+            
           < WhyChooseUsSection />
           < ShoppingSteps />
           < Testimonials />
@@ -57,24 +93,25 @@ function App() {
         )}
 
         {page === "shop" &&(
-          < ShopGroceries
+          < ShopGroceries onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct}
             wishlist={wishlist} onToggleWishlist={handleToggleWishlist}/>
         )}
 
         {page === "product" &&(
-          < ProductDetails />
+          < ProductDetails product={selectedProduct} onAddToCart={handleAddToCart}
+            onBack={() => setPage("shop")} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />
         )}
 
         {page === "cart" &&(
-          < Cart setPage={setPage} />
+          < Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={(id) => setCart(c => c.filter(i => i.id !== id))} setPage={setPage} />
         )}
 
         {page === "checkout" &&(
-          < Checkout setPage={setPage} />
+          < Checkout cart={cart} setPage={setPage} />
         )}
 
         {page === "dashboard" &&(
-          < CustomerDashboard setPage={setPage} />
+          < CustomerDashboard setPage={setPage} onAddToCart={handleAddToCart} />
         )}
 
         {page === "about" &&(
