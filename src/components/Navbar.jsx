@@ -11,6 +11,7 @@ export const Navbar = ({page, setPage, cartCount}) => {
         { label: "Errands", target: "errands" },
         { label: "About", target: "about" },
         { label: "Contact", target: "contact" },
+        { label: "Admin", target: "admin" },
     ];
 
     const go = p => setPage(p);

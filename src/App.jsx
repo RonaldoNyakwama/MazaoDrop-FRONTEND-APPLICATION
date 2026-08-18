@@ -76,14 +76,18 @@ function App() {
       <main className="flex-1">
         {page === "home" &&(
           <>
-          < Home setPage={setPage} cart={cart} onAddToCart={handleAddToCart}
-            wishlist={wishlist} onToggleWishlist={handleToggleWishlist} onSelectProduct={handleSelectProduct} />
+          < Home 
+            setPage={setPage} cart={cart} onAddToCart={handleAddToCart}
+            wishlist={wishlist} onToggleWishlist={handleToggleWishlist} onSelectProduct={handleSelectProduct} 
+          />
 
           < CategoriesSection />
-          < HandpickedProducts onAddToCart={handleAddToCart}
+          < HandpickedProducts 
+            onAddToCart={handleAddToCart}
             onSelectProduct={handleSelectProduct}
             wishlist={wishlist}
-            onToggleWishlist={handleToggleWishlist}/>
+            onToggleWishlist={handleToggleWishlist}
+          />
             
           < WhyChooseUsSection />
           < ShoppingSteps />
@@ -111,7 +115,10 @@ function App() {
         )}
 
         {page === "dashboard" &&(
-          < CustomerDashboard setPage={setPage} onAddToCart={handleAddToCart} />
+          < CustomerDashboard 
+            setPage={setPage} 
+            onAddToCart={handleAddToCart} 
+          />
         )}
 
         {page === "about" &&(
