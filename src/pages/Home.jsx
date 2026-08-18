@@ -1,6 +1,11 @@
 import { MapPin, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { LOCATIONS } from "../data/locations";
 
-export const Home = () => {
+export const Home = ({ setPage }) => {
+    
+    const [location, setLocation] = useState("Westlands");
+
     return (
         <div>
         {/* Hero section */}
@@ -35,35 +40,45 @@ export const Home = () => {
                     </p>
                 </div>
 
-                 {/* Location Selector */}
-            <div className="bg-white rounded-2xl p-4 mb-6 shadow-xl max-w-md">
-              <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
-                < MapPin /> 
-                Where should we deliver?
-              </p>
+                {/* Location Selector */}
+                <div className="bg-white rounded-2xl p-4 mb-6 shadow-xl max-w-md">
+                <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide"> 
+                    Where should we deliver?
+                </p>
 
-              <div className="flex gap-2">
-                <div className="flex-1 flex items-center gap-2 bg-muted rounded-xl px-3 py-2.5">
-                  <select value={location} 
-                    className="bg-transparent text-sm font-medium text-foreground w-full outline-none">
-                  </select>
-                  
+                <div className="flex gap-2">
+                    <div className="flex-1 flex items-center gap-2 bg-muted rounded-xl px-3 py-2.5">
+                    < MapPin className="w-4 h-4 text-accent shrink-0" />
+                    <select 
+                        value={location} 
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="bg-transparent text-sm font-medium text-foreground w-full outline-none">
+                        {LOCATIONS.map((a) => (
+                            <option key={a}>{a}</option>
+                        ))}
+                    </select>
+                    
+                    </div>
+                    <button
+                        onClick={() => setPage("shop")}
+                        className="bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition-colors text-sm whitespace-nowrap">
+                        Confirm
+                    </button>
                 </div>
-                <button
-                  className="bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition-colors text-sm whitespace-nowrap">
-                  Confirm
-                </button>
-              </div>
               
             </div>
             <div className="flex flex-wrap gap-3">
-                <button className="flex items-center gap-2 bg-accent text-white font-bold px-7 py-3.5 rounded-2xl hover:bg-accent/90 active:scale-95 transition-all text-base shadow-lg shadow-accent/30">
-                Start Shopping
+                <button 
+                    onClick={() => setPage("shop")}
+                    className="flex items-center gap-2 bg-accent text-white font-bold px-7 py-3.5 rounded-2xl hover:bg-accent/90 active:scale-95 transition-all text-base shadow-lg shadow-accent/30">
+                    Start Shopping
                 <ArrowRight className="w-4 h-4" />
                 </button>
 
-                <button className="flex items-center gap-2 bg-white/15 text-white font-semibold px-7 py-3.5 rounded-2xl hover:bg-white/25 transition-all text-base backdrop-blur border border-white/20">
-                Browse Categories
+                <button
+                    onClick={() => setPage("shop")} 
+                    className="flex items-center gap-2 bg-white/15 text-white font-semibold px-7 py-3.5 rounded-2xl hover:bg-white/25 transition-all text-base backdrop-blur border border-white/20">
+                    Browse Categories
                 </button>
             </div>
             </div>
