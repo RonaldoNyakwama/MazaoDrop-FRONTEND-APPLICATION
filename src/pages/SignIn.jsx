@@ -8,10 +8,14 @@ export const SignIn = ({setPage}) => {
     const [error, setError] = useState("");
 
     const handleSubmit = () => {
+        console.log("Submit button clicked");
+
         if (!form.email || !form.password) {
-        setError("Please enter your email and password.");
-        return;
-        }
+            setError("Please enter your email and password.");
+            return;
+        };
+
+        setPage("dashboard");
     };
 
     return (
