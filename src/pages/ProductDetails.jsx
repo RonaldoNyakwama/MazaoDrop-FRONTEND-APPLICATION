@@ -160,7 +160,7 @@ export const ProductDetails = ({ product, onAddToCart, onBack, wishlist, onToggl
                         product={p} 
                         onAddToCart={onAddToCart} 
                         onSelect={() => {}} 
-                        sWishlisted={wishlist.has(p.id)} 
+                        isWishlisted={wishlist.has(p.id)} 
                         onToggleWishlist={onToggleWishlist} 
                     />
                 ))}
