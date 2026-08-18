@@ -81,8 +81,10 @@ function App() {
             wishlist={wishlist} onToggleWishlist={handleToggleWishlist} onSelectProduct={handleSelectProduct} 
           />
 
-          < CategoriesSection />
+          < CategoriesSection setPage={setPage} />
+          
           < HandpickedProducts 
+            setPage={setPage} 
             onAddToCart={handleAddToCart}
             onSelectProduct={handleSelectProduct}
             wishlist={wishlist}
