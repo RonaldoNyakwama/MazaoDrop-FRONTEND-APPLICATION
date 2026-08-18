@@ -112,7 +112,7 @@ export const Checkout = ({ cart, setPage }) => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { id: "mpesa", icon: Smartphone, label: "M-Pesa", desc: "Pay via M-Pesa STK push" },
-                { id: "card", icon: CreditCard, label: "Card", desc: "Visa / Mastercard" },
+                { id: "airtel", icon: Smartphone, label: "AirtelMoney", desc: "Pay via Airtel Money STK push" },
                 { id: "cash", icon: Banknote, label: "Cash on Delivery", desc: "Pay when we arrive" },
               ].map(({ id, icon: Icon, label, desc }) => (
                 <button key={id} onClick={() => setPayment(id)}
@@ -132,6 +132,16 @@ export const Checkout = ({ cart, setPage }) => {
                   className="mt-2 w-full max-w-xs px-3 py-2 bg-white border border-green-200 rounded-lg text-sm outline-none focus:border-green-500 transition-colors" />
               </div>
             )}
+
+            {payment === "airtel" && (
+              <div className="mt-4 bg-green-50 rounded-xl p-4">
+                <p className="text-sm font-semibold text-green-800 mb-1"> Airtel Money Payment</p>
+                <p className="text-xs text-green-700">Enter your Airtel registered phone number. We will send a payment request prompt to your phone.</p>
+                <input placeholder="+254 7XX XXX XXX"
+                  className="mt-2 w-full max-w-xs px-3 py-2 bg-white border border-green-200 rounded-lg text-sm outline-none focus:border-green-500 transition-colors" />
+              </div>
+            )}
+
           </div>
         </div>
 
