@@ -58,8 +58,17 @@ export const ErrandsPage = ({ setPage })=> {
           </div>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => setPage("dashboard")} className="flex-1 bg-primary text-white font-bold py-3 rounded-2xl hover:bg-primary/90 transition-colors">Track My Errand</button>
-          <button onClick={() => { setSelected([]); setSubmitted(false); }} className="flex-1 border border-border font-semibold py-3 rounded-2xl hover:bg-muted transition-colors">New Errand</button>
+          <button 
+            onClick={() => setPage("dashboard")} 
+            className="flex-1 bg-primary text-white font-bold py-3 rounded-2xl hover:bg-primary/90 transition-colors"
+          >
+            Track My Errand
+          </button>
+          <button 
+            onClick={() => { setSelected([]); setSubmitted(false); }} className="flex-1 border border-border font-semibold py-3 rounded-2xl hover:bg-muted transition-colors"
+          >
+            New Errand
+          </button>
         </div>
       </div>
     );
@@ -77,7 +86,7 @@ export const ErrandsPage = ({ setPage })=> {
             We Handle Your Errands, <span className="text-accent">You Stay Home.</span>
           </h1>
           <p className="text-white/80 text-lg max-w-xl mx-auto mb-6">
-            From picking up parcels to getting pet food — tell us what you need and our runners will take care of it across Westlands and Waiyaki Way.
+            From picking up parcels to getting pet food. Tell us what you need and our runners will take care of it across Westlands and Waiyaki Way.
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-white/70">
             {["📦 Parcel Collection", "🐾 Pet Supplies", "💊 Pharmacy", "✨ Custom Requests"].map((t) => (
@@ -102,8 +111,10 @@ export const ErrandsPage = ({ setPage })=> {
               {ERRAND_TYPES.map((errand) => {
                 const isOn = selected.includes(errand.id);
                 return (
-                  <div key={errand.id}
-                    className={`rounded-2xl border-2 transition-all duration-200 overflow-hidden ${isOn ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/40"}`}>
+                  <div 
+                    key={errand.id}
+                    className={`rounded-2xl border-2 transition-all duration-200 overflow-hidden ${isOn ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/40"}`}
+                  >
                     {/* Card header — click to toggle */}
                     <button
                       onClick={() => toggle(errand.id)}
@@ -140,7 +151,7 @@ export const ErrandsPage = ({ setPage })=> {
                         </div>
                         <div>
                           <label className="text-xs font-semibold text-muted-foreground block mb-1">
-                            Pickup location <span className="font-normal">(optional — if runner must collect from somewhere)</span>
+                            Pickup location <span className="font-normal">(optional if runner must collect from somewhere)</span>
                           </label>
                           <input
                             value={configs[errand.id]?.pickup ?? ""}
@@ -185,7 +196,9 @@ export const ErrandsPage = ({ setPage })=> {
               {/* Selected errands list */}
               {selectedTypes.length > 0 ? (
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Selected Errands</p>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    Selected Errands
+                  </p>
                   {selectedTypes.map((t) => (
                     <div key={t.id} className="flex items-center justify-between text-sm py-1.5">
                       <span className="flex items-center gap-2 text-foreground">
@@ -203,7 +216,7 @@ export const ErrandsPage = ({ setPage })=> {
                     <span className="text-primary" style={{ fontFamily: "Outfit, sans-serif" }}>KES {totalFee}</span>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    + cost of any items purchased on your behalf (paid on delivery or via M-Pesa).
+                    + cost of any items purchased on your behalf, including applicable transport costs (paid via M-Pesa or Airtel Money upon completion).
                   </p>
                 </div>
               ) : (
@@ -228,7 +241,7 @@ export const ErrandsPage = ({ setPage })=> {
                 {[
                   { icon: Shield, text: "Vetted, trusted runners" },
                   { icon: Clock, text: "Real-time SMS updates" },
-                  { icon: Smartphone, text: "Pay via M-Pesa on delivery" },
+                  { icon: Smartphone, text: "Pay via M-Pesa or Airtel Money" },
                 ].map(({ icon: Icon, text }) => (
                   <p key={text} className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Icon className="w-3.5 h-3.5 text-primary shrink-0" />
