@@ -42,7 +42,14 @@ export const Register = ({ setPage, onLogin }) => {
 
         console.log("Form is valid");
         // Auto-login immediately after registration — no extra sign-in step needed
-        onLogin(form.name.trim(), form.email);
+        const user = ({
+            name: form.name.trim(),
+            email: form.email,
+            phone: form.phone,
+            location: form.location,
+        });
+
+        onLogin(user);
         setPage("dashboard");
     };
 

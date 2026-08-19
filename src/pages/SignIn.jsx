@@ -3,7 +3,7 @@ import { Leaf, Mail, Shield, Eye, EyeOff } from "lucide-react";
 import { emailRe, fieldCls } from "../Validations/Validations";
 import { FieldError } from "../Validations/FieldError";
 
-export const SignIn = ({setPage}) => {
+export const SignIn = ({ setPage, onLogin }) => {
 
     const [form, setForm] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
@@ -21,11 +21,19 @@ export const SignIn = ({setPage}) => {
     const isValid = !errors.email && !errors.password;
 
     const handleSubmit = () => {
-        console.log("Submit button clicked");
+        //console.log("Submit button clicked");
 
         setSubmitAttempted(true);
 
         if (!isValid) return;
+
+        // Replace later upon setting up the backend
+        const user = {
+            name: form.email.split("@")[0],
+            email: form.email,
+        };
+
+        onLogin(user);
 
         setPage("dashboard");
     };
