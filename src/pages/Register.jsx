@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Leaf, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { Leaf, Eye, EyeOff, Check } from "lucide-react";
 import { LOCATIONS } from "../data/locations";
+import { emailRe, phoneRe, strongPw, fieldCls } from "../Validations/Validations";
+import { FieldError } from "../Validations/FieldError";
 
-export const Register = ({setPage}) => {
+export const Register = ({ setPage, onLogin }) => {
 
     const [form, setForm] = useState({ 
         name: "", 
@@ -11,41 +13,42 @@ export const Register = ({setPage}) => {
         password: "", confirm: "" 
     });
 
+    const [showConfirm, setShowConfirm] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [agreed, setAgreed] = useState(false);
-    const [done, setDone] = useState(false);
+    const [touched, setTouched] = useState(new Set());
+    const [submitAttempted, setSubmitAttempted] = useState(false);
+    
+    const touch = (f) => setTouched(t => new Set(t).add(f));
+    const show = (f) => submitAttempted || touched.has(f);
 
-    const handleSubmit = () => {
-        if (form.name && form.email && form.phone && form.password && form.password === form.confirm && agreed) {
-        setDone(true);
-        }
+    const errors = {
+        name: !form.name.trim() ? "Full name is required." : form.name.trim().length < 2 ? "Name must be at least 2 characters." : "",
+        email: !form.email ? "Email is required." : !emailRe.test(form.email) ? "Enter a valid email address (e.g. yourname@gmail.com)." : "",
+        phone: !form.phone ? "Phone number is required." : !phoneRe.test(form.phone.replace(/\s/g, "")) ? "Enter a valid Kenyan number (07XX or +2547XX)." : "",
+        password: !form.password ? "Password is required." : !strongPw(form.password) ? "Password must be 8+ characters with at least one letter and one number." : "",
+        confirm: !form.confirm ? "Please confirm your password." : form.confirm !== form.password ? "Passwords do not match." : "",
+        agreed: !agreed ? "You must accept the terms to continue." : "",
     };
 
-    if (done) {
-        return (
-            <div className="max-w-md mx-auto px-4 py-20 text-center">
-                <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
-                <CheckCircle className="w-10 h-10 text-green-500" />
-                </div>
-                <h2 className="text-2xl font-bold text-foreground mb-2" style={{ fontFamily: "Outfit, sans-serif" }}>Welcome to MazaoDrop!</h2>
-                <p className="text-muted-foreground mb-6">
-                    Your account has been created. Start shopping fresh groceries from your local market.
-                </p>
-                <button onClick={() => setPage("shop")} className="w-full bg-primary text-white font-bold py-3.5 rounded-2xl hover:bg-primary/90 transition-colors mb-3">
-                    Start Shopping
-                </button>
-                <button onClick={() => setPage("dashboard")} className="w-full border border-border font-semibold py-3.5 rounded-2xl hover:bg-muted transition-colors text-sm">
-                    Go to My Dashboard
-                </button>
-            </div>
-        );
-    }
+    const isValid = Object.values(errors).every(e => !e);
+
+    const handleSubmit = () => {
+        // Show all validation errors
+        setSubmitAttempted(true);
+        
+        // Stop if there are validation errors
+        if (!isValid) return;
+
+        console.log("Form is valid");
+        // Auto-login immediately after registration — no extra sign-in step needed
+        onLogin(form.name.trim(), form.email);
+        setPage("dashboard");
+    };
 
     return (
         <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-
-            {/* Logo */}
             <div className="text-center mb-8">
             <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-3">
                 <Leaf className="w-6 h-6 text-white" />
@@ -55,68 +58,114 @@ export const Register = ({setPage}) => {
             </div>
 
             <div className="bg-card rounded-3xl border border-border shadow-lg p-6 sm:p-8 space-y-4">
+            {/* Full Name */}
             <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Full Name</label>
-                <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="e.g. Full Name"
-                className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors" />
+                <input value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onBlur={() => touch("name")}
+                placeholder="e.g. FirstName LastName"
+                className={`${fieldCls(show("name") && !!errors.name)} px-4`} />
+                {show("name") && errors.name && <FieldError msg={errors.name} />}
             </div>
+
+            {/* Email */}
             <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Email Address</label>
-                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                <input type="email" value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                onBlur={() => touch("email")}
                 placeholder="yourname@gmail.com"
-                className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors" />
+                className={`${fieldCls(show("email") && !!errors.email)} px-4`} />
+                {show("email") && errors.email && <FieldError msg={errors.email} />}
             </div>
+
+            {/* Phone */}
             <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Phone Number (M-Pesa)</label>
-                <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="+254 7XX XXX XXX"
-                className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors" />
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Phone Number <span className="font-normal text-muted-foreground">(M-Pesa / Airtel)</span></label>
+                <input value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                onBlur={() => touch("phone")}
+                placeholder="0712 345 678 or +254 712 345 678"
+                className={`${fieldCls(show("phone") && !!errors.phone)} px-4`} />
+                {show("phone") && errors.phone && <FieldError msg={errors.phone} />}
             </div>
+
+            {/* Delivery Area */}
             <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Delivery Area</label>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Preferred Delivery Area</label>
                 <select value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })}
                 className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors">
                 {LOCATIONS.map((l) => <option key={l}>{l}</option>)}
                 </select>
             </div>
+
+            {/* Password */}
             <div>
                 <label className="text-xs font-semibold text-muted-foreground block mb-1">Password</label>
                 <div className="relative">
                 <input type={showPassword ? "text" : "password"} value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
-                    placeholder="At least 8 characters"
-                    className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors pr-10" />
-                <button onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                    onBlur={() => touch("password")}
+                    placeholder="At least 8 characters with a number"
+                    className={`${fieldCls(show("password") && !!errors.password)} px-4 pr-10`} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
                 </div>
-            </div>
-            <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-1">Confirm Password</label>
-                <input type="password" value={form.confirm} onChange={(e) => setForm({ ...form, confirm: e.target.value })}
-                placeholder="Repeat your password"
-                className={`w-full px-4 py-3 bg-muted/50 border rounded-xl text-sm outline-none transition-colors ${form.confirm && form.confirm !== form.password ? "border-red-400 focus:border-red-400" : "border-border focus:border-primary"}`} />
-                {form.confirm && form.confirm !== form.password && (
-                <p className="text-xs text-red-500 mt-1">Passwords do not match</p>
+                {show("password") && errors.password && <FieldError msg={errors.password} />}
+                {/* Strength indicator */}
+                {form.password && (
+                <div className="flex gap-1 mt-1.5">
+                    {[form.password.length >= 8, /[A-Z]/.test(form.password), /\d/.test(form.password), form.password.length >= 12].map((ok, i) => (
+                    <div key={i} className={`h-1 flex-1 rounded-full transition-colors ${ok ? "bg-green-400" : "bg-muted"}`} />
+                    ))}
+                    <span className="text-xs text-muted-foreground ml-1">
+                    {form.password.length < 8 ? "Too short" : !strongPw(form.password) ? "Add a number" : form.password.length < 12 ? "Good" : "Strong"}
+                    </span>
+                </div>
                 )}
             </div>
 
-            <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)}
-                className="mt-0.5 w-4 h-4 accent-primary rounded" />
+            {/* Confirm Password */}
+            <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Confirm Password</label>
+                <div className="relative">
+                <input type={showConfirm ? "text" : "password"} value={form.confirm}
+                    onChange={(e) => setForm({ ...form, confirm: e.target.value })}
+                    onBlur={() => touch("confirm")}
+                    placeholder="Repeat your password"
+                    className={`${fieldCls(show("confirm") && !!errors.confirm)} px-4 pr-10`} />
+                <button type="button" onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                    {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+                </div>
+                {show("confirm") && errors.confirm && <FieldError msg={errors.confirm} />}
+                {form.confirm && !errors.confirm && (
+                <p className="flex items-center gap-1 text-xs text-green-600 mt-1"><Check className="w-3 h-3" />Passwords match</p>
+                )}
+            </div>
+
+            {/* Terms */}
+            <div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); touch("agreed"); }}
+                    className="mt-0.5 w-4 h-4 accent-primary rounded" />
                 <span className="text-xs text-muted-foreground leading-relaxed">
-                I agree to SokoFresh's{" "}
-                <button onClick={() => setPage("support")} className="text-primary font-semibold hover:underline">Terms of Service</button>
-                {" "}and{" "}
-                <button onClick={() => setPage("support")} className="text-primary font-semibold hover:underline">Privacy Policy</button>
+                    I agree to MazaoDrop&apos;s{" "}
+                    <button type="button" onClick={() => setPage("support")} className="text-primary font-semibold hover:underline">Terms of Service</button>
+                    {" "}and{" "}
+                    <button type="button" onClick={() => setPage("support")} className="text-primary font-semibold hover:underline">Privacy Policy</button>
                 </span>
-            </label>
+                </label>
+                {show("agreed") && errors.agreed && <FieldError msg={errors.agreed} />}
+            </div>
 
             <button onClick={handleSubmit}
-                disabled={!agreed || !form.name || !form.email || !form.password || form.password !== form.confirm}
-                className="w-full bg-primary text-white font-bold py-3.5 rounded-2xl hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100">
-                Create Account
+                className="w-full bg-primary text-white font-bold py-3.5 rounded-2xl hover:bg-primary/90 active:scale-95 transition-all">
+                Create Account & Start Shopping
             </button>
 
             <p className="text-center text-sm text-muted-foreground">
@@ -125,8 +174,8 @@ export const Register = ({setPage}) => {
             </p>
             </div>
         </div>
-        </div>
-    );
+    </div>
+    )
 
 };
 

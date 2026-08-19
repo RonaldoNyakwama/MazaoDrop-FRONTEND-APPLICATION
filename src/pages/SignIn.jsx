@@ -1,19 +1,31 @@
 import { useState } from "react";
-import { Leaf, AlertCircle, Mail, Shield, Eye, EyeOff } from "lucide-react";
+import { Leaf, Mail, Shield, Eye, EyeOff } from "lucide-react";
+import { emailRe, fieldCls } from "../Validations/Validations";
+import { FieldError } from "../Validations/FieldError";
 
 export const SignIn = ({setPage}) => {
 
     const [form, setForm] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState("");
+    const [touched, setTouched] = useState(new Set());
+    const [submitAttempted, setSubmitAttempted] = useState(false);
+
+    const touch = (f) => setTouched(t => new Set(t).add(f));
+    const show = (f) => submitAttempted || touched.has(f);
+
+    const errors = {
+        email: !form.email ? "Email is required." : !emailRe.test(form.email) ? "Enter a valid email address." : "",
+        password: !form.password ? "Password is required." : form.password.length < 8 ? "Password must be at least 8 characters." : "",
+    };
+
+    const isValid = !errors.email && !errors.password;
 
     const handleSubmit = () => {
         console.log("Submit button clicked");
 
-        if (!form.email || !form.password) {
-            setError("Please enter your email and password.");
-            return;
-        };
+        setSubmitAttempted(true);
+
+        if (!isValid) return;
 
         setPage("dashboard");
     };
@@ -32,13 +44,7 @@ export const SignIn = ({setPage}) => {
                 </div>
 
                 <div className="bg-card rounded-3xl border border-border shadow-lg p-6 sm:p-8 space-y-4">
-                {error && (
-                    <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
-                    {error}
-                    </div>
-                )}
-
+                {/* Email */}
                 <div>
                     <label className="text-xs font-semibold text-muted-foreground block mb-1">Email Address</label>
                     <div className="relative">
@@ -47,12 +53,15 @@ export const SignIn = ({setPage}) => {
                         type="email"
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        onBlur={() => touch("email")}
                         placeholder="yourname@gmail.com"
-                        className="w-full pl-10 pr-4 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors"
+                        className={`${fieldCls(show("email") && !!errors.email)} pl-10 pr-4`}
                     />
                     </div>
+                    {show("email") && errors.email && <FieldError msg={errors.email} />}
                 </div>
 
+                {/* Password */}
                 <div>
                     <div className="flex justify-between items-center mb-1">
                     <label className="text-xs font-semibold text-muted-foreground">Password</label>
@@ -64,16 +73,17 @@ export const SignIn = ({setPage}) => {
                         type={showPassword ? "text" : "password"}
                         value={form.password}
                         onChange={(e) => setForm({ ...form, password: e.target.value })}
+                        onBlur={() => touch("password")}
                         onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-                        placeholder="Your password"
-                        className="w-full pl-10 pr-10 py-3 bg-muted/50 border border-border rounded-xl text-sm outline-none focus:border-primary transition-colors"
+                        placeholder="Your password (min. 8 characters)"
+                        className={`${fieldCls(show("password") && !!errors.password)} pl-10 pr-10`}
                     />
-                    <button
-                        onClick={() => setShowPassword(!showPassword)}
+                    <button onClick={() => setShowPassword(!showPassword)} type="button"
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                     </div>
+                    {show("password") && errors.password && <FieldError msg={errors.password} />}
                 </div>
 
                 <button

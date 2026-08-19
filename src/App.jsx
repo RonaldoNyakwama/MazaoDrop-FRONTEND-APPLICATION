@@ -27,6 +27,19 @@ function App() {
   const [wishlist, setWishlist] = useState(new Set());
   const [cart, setCart] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const handleLogin = (name, email) => {
+    setIsLoggedIn(true);
+    setCurrentUser({ name, email });
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+    setPage("home");
+  };
 
   const handleToggleWishlist = (id) => {
     setWishlist((prev) => {
@@ -70,7 +83,14 @@ function App() {
     <div className="min-h-screen bg-background flex flex-col">
 
       {!isFullScreen && (
-        < Navbar page={page} setPage={setPage} cartCount={cartCount} />
+        < Navbar 
+          page={page} 
+          setPage={setPage} 
+          cartCount={cartCount}
+          isLoggedIn={isLoggedIn} 
+          userName={currentUser?.name ?? null} 
+          onLogout={handleLogout} 
+        />
       )}
       
       <main className="flex-1">
@@ -104,16 +124,28 @@ function App() {
         )}
 
         {page === "product" &&(
-          < ProductDetails product={selectedProduct} onAddToCart={handleAddToCart}
-            onBack={() => setPage("shop")} wishlist={wishlist} onToggleWishlist={handleToggleWishlist} />
+          < ProductDetails 
+            product={selectedProduct} 
+            onAddToCart={handleAddToCart}
+            onBack={() => setPage("shop")} 
+            wishlist={wishlist} 
+            onToggleWishlist={handleToggleWishlist} 
+          />
         )}
 
         {page === "cart" &&(
-          < Cart cart={cart} onUpdateQty={handleUpdateQty} onRemove={(id) => setCart(c => c.filter(i => i.id !== id))} setPage={setPage} />
+          < Cart 
+            cart={cart} 
+            onUpdateQty={handleUpdateQty} 
+            onRemove={(id) => setCart(c => c.filter(i => i.id !== id))} setPage={setPage} 
+          />
         )}
 
         {page === "checkout" &&(
-          < Checkout cart={cart} setPage={setPage} />
+          < Checkout 
+            cart={cart} 
+            setPage={setPage} 
+          />
         )}
 
         {page === "dashboard" &&(
@@ -136,11 +168,17 @@ function App() {
         )}
 
         {page === "signin" &&(
-          < SignIn setPage={setPage} />
+          < SignIn 
+            setPage={setPage} 
+            onLogin={handleLogin} 
+          />
         )}
 
         {page === "register" &&(
-          < Register setPage={setPage} />
+          < Register 
+            setPage={setPage} 
+            onLogin={handleLogin} 
+          />
         )}
 
         {page === "errands" &&(
