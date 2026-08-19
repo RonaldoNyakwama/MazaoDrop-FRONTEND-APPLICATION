@@ -86,7 +86,7 @@ export const Cart = ({ cart, onUpdateQty, onRemove, setPage }) => {
             <div className="mt-5 pt-4 border-t border-border">
               <p className="text-xs text-muted-foreground text-center mb-2">Accepted Payments</p>
               <div className="flex justify-center gap-2">
-                {["M-Pesa", "Visa", "Mastercard", "Cash"].map((p) => (
+                {["M-Pesa", "Airtel", "Cash"].map((p) => (
                   <span key={p} className="text-xs px-2 py-1 bg-muted rounded-md font-medium text-muted-foreground">{p}</span>
                 ))}
               </div>
