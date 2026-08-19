@@ -30,9 +30,9 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const handleLogin = (name, email) => {
+  const handleLogin = (user) => {
     setIsLoggedIn(true);
-    setCurrentUser({ name, email });
+    setCurrentUser(user);
   };
 
   const handleLogout = () => {
@@ -97,8 +97,12 @@ function App() {
         {page === "home" &&(
           <>
           < Home 
-            setPage={setPage} cart={cart} onAddToCart={handleAddToCart}
-            wishlist={wishlist} onToggleWishlist={handleToggleWishlist} onSelectProduct={handleSelectProduct} 
+            setPage={setPage} 
+            cart={cart} 
+            onAddToCart={handleAddToCart}
+            wishlist={wishlist} 
+            onToggleWishlist={handleToggleWishlist} 
+            onSelectProduct={handleSelectProduct} 
           />
 
           < CategoriesSection setPage={setPage} />
@@ -119,8 +123,12 @@ function App() {
         )}
 
         {page === "shop" &&(
-          < ShopGroceries onAddToCart={handleAddToCart} onSelectProduct={handleSelectProduct}
-            wishlist={wishlist} onToggleWishlist={handleToggleWishlist}/>
+          < ShopGroceries 
+            onAddToCart={handleAddToCart} 
+            onSelectProduct={handleSelectProduct}
+            wishlist={wishlist} 
+            onToggleWishlist={handleToggleWishlist}
+          />
         )}
 
         {page === "product" &&(
@@ -151,7 +159,8 @@ function App() {
         {page === "dashboard" &&(
           < CustomerDashboard 
             setPage={setPage} 
-            onAddToCart={handleAddToCart} 
+            onAddToCart={handleAddToCart}
+            currentUser={currentUser} 
           />
         )}
 

@@ -39,7 +39,7 @@ const PAST_ORDERS = [
     },
 ];
 
-export const CustomerDashboard = ({setPage, onAddToCart}) => {
+export const CustomerDashboard = ({ setPage, onAddToCart, currentUser }) => {
 
     const [activeTab, setActiveTab] = useState("orders");
     const [reorderingId, setReorderingId] = useState(null);
@@ -73,8 +73,8 @@ export const CustomerDashboard = ({setPage, onAddToCart}) => {
                 <div className="flex items-center gap-4 mb-4">
                     <img src="images/wanja.png" w={80} h={80} alt="Profile" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" />
                     <div>
-                    <h2 className="text-2xl font-bold" style={{ fontFamily: "Outfit, sans-serif" }}>Habari, Wanjiku! 👋</h2>
-                    <p className="text-white/70 text-sm">Westlands · Member since Jan 2024</p>
+                    <h2 className="text-2xl font-bold" style={{ fontFamily: "Outfit, sans-serif" }}>Habari, {currentUser?.name || "Customer"}! 👋</h2>
+                    <p className="text-white/70 text-sm"> {currentUser?.location || "Nairobi"} · Member since Jan 2024</p>
                     </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4">
@@ -233,10 +233,10 @@ export const CustomerDashboard = ({setPage, onAddToCart}) => {
                 <div className="max-w-lg">
                 <div className="bg-card rounded-2xl border border-border shadow-sm p-6 space-y-4">
                     {[
-                    { label: "Full Name", value: "Wanjiku Kamau" },
-                    { label: "Email", value: "wanjiku@gmail.com" },
-                    { label: "Phone", value: "+254 722 345 678" },
-                    { label: "Delivery Area", value: "Westlands" },
+                    { label: "Full Name", value: currentUser?.name },
+                    { label: "Email", value: currentUser?.email },
+                    { label: "Phone", value: currentUser?.phone },
+                    { label: "Delivery Area", value: currentUser?.location },
                     ].map(({ label, value }) => (
                     <div key={label}>
                         <label className="text-xs font-semibold text-muted-foreground block mb-1">{label}</label>
