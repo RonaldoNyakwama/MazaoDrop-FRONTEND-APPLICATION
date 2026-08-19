@@ -152,7 +152,9 @@ function App() {
         {page === "checkout" &&(
           < Checkout 
             cart={cart} 
-            setPage={setPage} 
+            setPage={setPage}
+            isLoggedIn={isLoggedIn}
+            currentUser={currentUser} 
           />
         )}
 
